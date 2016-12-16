@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane maxHeight="400" maxWidth="500" minHeight="400" minWidth="500" prefHeight="400.0" prefWidth="500.0" styleClass="fon" stylesheets="@../view/style.css" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerRules">
+    <Label layoutX="76.0" layoutY="45.0" prefHeight="38.0" prefWidth="216.0" styleClass="text_style" text="Правила игры" />
+   <Button fx:id="mainButton" layoutX="76.0" layoutY="318.0" mnemonicParsing="false" onMouseClicked="#clickMainButton" prefHeight="38.0" prefWidth="140.0" styleClass="dark_button" text="На главную" />
+   <TextFlow layoutX="76.0" layoutY="100.0" prefHeight="200.0" prefWidth="267.0"/>
+</AnchorPane>

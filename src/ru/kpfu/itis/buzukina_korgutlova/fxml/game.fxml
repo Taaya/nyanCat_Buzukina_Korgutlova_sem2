@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="500.0"  stylesheets="@../view/style.css" styleClass="fon" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerGame">
+   <Label layoutX="49.0" layoutY="28.0" prefWidth="80.0" text="Время" styleClass="text_style"/>
+   <ToggleButton layoutX="376.0" layoutY="24.0" mnemonicParsing="false" text="Звук" styleClass="dark_button"/>
+   <Label layoutX="203.0" layoutY="21.0" prefHeight="31.0" prefWidth="95.0" text="Счет" styleClass="text_style"/>
+</AnchorPane>
