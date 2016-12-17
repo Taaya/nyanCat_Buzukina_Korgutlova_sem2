@@ -1,5 +1,6 @@
 package ru.kpfu.itis.buzukina_korgutlova.controllers;
 
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -42,8 +43,12 @@ public class ControllerMenu implements Initializable {
     }
 
 
-    public void clickOnPlayButton(MouseEvent mouseEvent) {
-        stage.setScene(gameScene);
+    public void clickOnPlayButton(MouseEvent mouseEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/game.fxml"));
+        loader.load();
+        ControllerGame controllerGame = loader.getController();
+        controllerGame.setStage(stage);
+        stage.setScene(controllerGame.getSceneGame());
     }
 
     public void clickOnRulesButton(MouseEvent mouseEvent) throws IOException {
