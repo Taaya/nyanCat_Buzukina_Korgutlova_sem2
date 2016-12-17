@@ -36,7 +36,7 @@ public class MainApp extends Application {
     }
 
     private void initMenu() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/menu.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/menu.fxml"));
         AnchorPane root = loader.load();
         controllerMenu = loader.getController();
         controllerMenu.setStage(primaryStage);
@@ -45,7 +45,7 @@ public class MainApp extends Application {
     }
 
     private void initRules() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/rules.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/rules.fxml"));
         AnchorPane root = loader.load();
         controllerRules = loader.getController();
         controllerRules.setStage(primaryStage);

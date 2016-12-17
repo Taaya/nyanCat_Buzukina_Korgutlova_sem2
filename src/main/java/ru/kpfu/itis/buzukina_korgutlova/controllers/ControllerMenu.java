@@ -44,7 +44,7 @@ public class ControllerMenu implements Initializable {
 
 
     public void clickOnPlayButton(MouseEvent mouseEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/game.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/game.fxml"));
         loader.load();
         ControllerGame controllerGame = loader.getController();
         controllerGame.setStage(stage);

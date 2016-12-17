@@ -28,8 +28,8 @@ public class ControllerGame implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Loading game area..");
-        Image firstImage = new Image(getClass().getResourceAsStream("../view/static/cat.png"));
-        Image secondImage = new Image(getClass().getResourceAsStream("../view/static/cat.png"));
+        Image firstImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat.png"));
+        Image secondImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat.png"));
         firstView = new ImageView(firstImage);
         secondView = new ImageView(secondImage);
         firstView.setFitWidth(50);
@@ -77,8 +77,8 @@ public class ControllerGame implements Initializable {
         ArrayList<Bonus> bonusArrayList = new ArrayList<>();
         Random random = new Random();
         Name [] names = Name.values();
-        for (int i = 0; i < 10; i++){
-            bonusArrayList.add(new Bonus(names[random.nextInt(3)], 400, random.nextInt(300) + 30));
+        for (int i = 0; i < 100; i++){
+            bonusArrayList.add(new Bonus(names[random.nextInt(3)], random.nextInt(20)* 20 + 450, random.nextInt(7) * 50 + 30));
         }
         for(Bonus bonus: bonusArrayList){
            mainAnchorPane.getChildren().add(bonus.getImageView());
@@ -87,7 +87,7 @@ public class ControllerGame implements Initializable {
             @Override
             public void handle(long now) {
                 for(Bonus bonus: bonusArrayList){
-                    bonus.setX(bonus.getX() - 1);
+                    bonus.setX(bonus.getX() - 3);
                     if(bonus.getX() <= 150 && bonus.getX() >= 100){
                         if(bonus.getY() <= firstView.getY() + firstView.getFitHeight() &&
                                 bonus.getY() + bonus.getImageView().getFitHeight() >= firstView.getY()){

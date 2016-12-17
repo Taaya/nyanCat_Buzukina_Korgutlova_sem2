@@ -19,14 +19,14 @@ public class Bonus{
         switch (name){
             case FLOWER:
                 this.value = 2;
-                this.imageView = new ImageView(new Image(getClass().getResourceAsStream("../view/static/flower.png")));
+                this.imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("view/static/flower.png")));
                 break;
             case FISH:
-                this.imageView = new ImageView(new Image(getClass().getResourceAsStream("../view/static/fish.jpg")));
+                this.imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("view/static/fish.jpg")));
                 this.value = 5;
                 break;
             case STAR:
-                this.imageView = new ImageView(new Image(getClass().getResourceAsStream("../view/static/star.png")));
+                this.imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("view/static/star.png")));
                 this.value = 10;
                 break;
         }
