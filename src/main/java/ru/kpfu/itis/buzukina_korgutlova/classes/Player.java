@@ -4,17 +4,15 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-import ru.kpfu.itis.buzukina_korgutlova.helpers.Connection;
-
 public class Player implements Runnable{
     Scanner scanner = new Scanner(System.in);
 
     int PORT = 3456;
     String HOST = "localhost";
 
-    //    private Connection connection;
     Player opponent;
     private Game game;
+    private BufferedReader picture;
     private String name;
     private Socket socket;
     private Thread thread;
@@ -34,6 +32,7 @@ public class Player implements Runnable{
         this.socket = socket;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
+
     }
 //    public Player(Socket socket, String name) throws IOException {
 //        this.socket = socket;
@@ -54,11 +53,7 @@ public class Player implements Runnable{
             try {
                 String coordinates;
                 if(in.ready()) {
-                    coordinates = in.readLine();
-//                    for (Connection connection: connections) {
-//                        System.out.println("coordinates: " + coordinates);
-//                        connection.getPrintWriter().println(this.name + ": " + coordinates);
-//                    }
+
                 }
 
             } catch (IOException e) {

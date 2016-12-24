@@ -43,8 +43,33 @@ public class ControllerGame implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Loading game area..");
-        Image firstImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat.png"));
-        Image secondImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat.png"));
+        Socket s = null;
+        try {
+            s = new Socket("localhost", 3456);
+            setIO(new BufferedReader(new InputStreamReader(s.getInputStream())), new PrintWriter(s.getOutputStream(), true));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int picture = 0;
+        try {
+            if(bufferedReader.ready())
+            picture = bufferedReader.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Image firstImage;
+        Image secondImage;
+        System.out.println("picture: " + picture);
+        if (picture == 1){
+            firstImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat1.png"));
+            secondImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat2.png"));
+        } else{
+            firstImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat2.png"));
+            secondImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat1.png"));
+        }
+
         firstView = new ImageView(firstImage);
         secondView = new ImageView(secondImage);
         firstView.setFitWidth(100);
@@ -78,13 +103,14 @@ public class ControllerGame implements Initializable {
     public void initMovie() throws IOException {
         final int STEP = 11;
         Socket s = new Socket("localhost", 3456);
-        setIO(new BufferedReader(new InputStreamReader(s.getInputStream())),new PrintWriter(s.getOutputStream(), true));
+        setIO(new BufferedReader(new InputStreamReader(s.getInputStream())), new PrintWriter(s.getOutputStream(), true));
         mainAnchorPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DOWN && firstView.getY() < stage.getHeight() - firstView.getFitHeight() - 2 * STEP){
                 System.out.println(firstView.getY());
                 firstView.setY(firstView.getY() + STEP);
                 System.out.println(printWriter);
                 printWriter.write((int) (firstView.getY() + STEP));
+                System.out.println("new Y: " + (int) (firstView.getY() + STEP));
             }
             if (event.getCode() == KeyCode.UP && firstView.getY() != 0) {
                 firstView.setY(firstView.getY() - STEP);
