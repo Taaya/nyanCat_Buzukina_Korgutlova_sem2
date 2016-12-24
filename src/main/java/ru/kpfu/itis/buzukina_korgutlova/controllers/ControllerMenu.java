@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -39,16 +40,17 @@ public class ControllerMenu implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Loading...");
-
     }
 
 
     public void clickOnPlayButton(MouseEvent mouseEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/game.fxml"));
-        loader.load();
+        AnchorPane root = loader.load();
         ControllerGame controllerGame = loader.getController();
         controllerGame.setStage(stage);
-        stage.setScene(controllerGame.getSceneGame());
+        Scene sceneGame = new Scene(root, 500, 400);
+        controllerGame.setSceneGame(sceneGame);
+        stage.setScene(sceneGame);
     }
 
     public void clickOnRulesButton(MouseEvent mouseEvent) throws IOException {

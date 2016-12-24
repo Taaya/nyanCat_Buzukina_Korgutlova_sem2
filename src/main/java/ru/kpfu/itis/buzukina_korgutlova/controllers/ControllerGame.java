@@ -45,7 +45,6 @@ public class ControllerGame implements Initializable {
         mainAnchorPane.getChildren().add(secondView);
         initMovie();
         initArea();
-        setSceneGame(new Scene(mainAnchorPane, 500, 400));
     }
 
     public void setStage(Stage stage) {
@@ -98,4 +97,6 @@ public class ControllerGame implements Initializable {
             }
         }.start();
     }
+
+
 }

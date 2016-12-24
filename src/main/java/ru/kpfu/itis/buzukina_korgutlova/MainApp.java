@@ -9,8 +9,8 @@ import ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerMenu;
 import ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerRules;
 
 public class MainApp extends Application {
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 400;
+    private static final int WIDTH = 900;
+    private static final int HEIGHT = 550;
     private ControllerMenu controllerMenu;
     private ControllerRules controllerRules;
     private Scene sceneMenu;
@@ -40,7 +40,7 @@ public class MainApp extends Application {
         AnchorPane root = loader.load();
         controllerMenu = loader.getController();
         controllerMenu.setStage(primaryStage);
-        sceneMenu = new Scene(root);
+        sceneMenu = new Scene(root, WIDTH, HEIGHT);
         controllerMenu.setMainScene(sceneMenu);
     }
 
@@ -49,7 +49,7 @@ public class MainApp extends Application {
         AnchorPane root = loader.load();
         controllerRules = loader.getController();
         controllerRules.setStage(primaryStage);
-        sceneRules = new Scene(root);
+        sceneRules = new Scene(root, WIDTH, HEIGHT);
         controllerRules.setRulesScene(sceneRules);
     }
 
