@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerGame;
 import ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerMenu;
 import ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerRules;
 
@@ -24,15 +25,17 @@ public class MainApp extends Application {
         initRules();
         controllerRules.setMainScene(sceneMenu);
         controllerMenu.setRulesScene(sceneRules);
-        initStage();
+        initStage(primaryStage, sceneMenu);
+
     }
 
-    private void initStage() {
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("Nyan Cat");
-        primaryStage.setScene(sceneMenu);
-        primaryStage.show();
-        primaryStage.getScene().getRoot().requestFocus();
+
+    private void initStage(Stage primaryStage, Scene scene) {
+        this.primaryStage.setResizable(false);
+        this.primaryStage.setTitle("Nyan Cat");
+        this.primaryStage.setScene(sceneMenu);
+        this.primaryStage.show();
+        this.primaryStage.getScene().getRoot().requestFocus();
     }
 
     private void initMenu() throws Exception {

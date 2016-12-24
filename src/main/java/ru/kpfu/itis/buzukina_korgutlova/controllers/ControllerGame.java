@@ -9,10 +9,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import ru.kpfu.itis.buzukina_korgutlova.content.Bonus;
-import ru.kpfu.itis.buzukina_korgutlova.content.Name;
+import ru.kpfu.itis.buzukina_korgutlova.classes.Bonus;
+import ru.kpfu.itis.buzukina_korgutlova.classes.Name;
 
 
+import java.io.*;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,6 +26,19 @@ public class ControllerGame implements Initializable {
     private Scene sceneGame;
     private ImageView firstView;
     private ImageView secondView;
+    private BufferedReader bufferedReader;
+    private PrintWriter printWriter;
+
+
+
+    public void setIO(BufferedReader bufferedReader, PrintWriter printWriter) throws IOException {
+//
+//        this.bufferedReader = new BufferedReader(new InputStreamReader(s.getInputStream()));
+//        this.printWriter = new PrintWriter(s.getOutputStream(), true);
+        this.bufferedReader = bufferedReader;
+        this.printWriter = printWriter;
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -32,20 +47,24 @@ public class ControllerGame implements Initializable {
         Image secondImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat.png"));
         firstView = new ImageView(firstImage);
         secondView = new ImageView(secondImage);
-        firstView.setFitWidth(50);
-        firstView.setFitHeight(50);
+        firstView.setFitWidth(100);
+        firstView.setFitHeight(100);
         firstView.setPreserveRatio(true);
         firstView.setX(100);
         secondView.setX(100);
         secondView.setY(300);
-        secondView.setFitHeight(50);
-        secondView.setFitWidth(50);
+        secondView.setFitHeight(100);
+        secondView.setFitWidth(100);
         secondView.setPreserveRatio(true);
         mainAnchorPane.getChildren().add(firstView);
         mainAnchorPane.getChildren().add(secondView);
-        initMovie();
+        try {
+            initMovie();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initArea();
-        setSceneGame(new Scene(mainAnchorPane, 500, 400));
+
     }
 
     public void setStage(Stage stage) {
@@ -56,15 +75,21 @@ public class ControllerGame implements Initializable {
         this.sceneGame = sceneGame;
     }
 
-    public void initMovie() {
-        final int STEP = 20;
+    public void initMovie() throws IOException {
+        final int STEP = 11;
+        Socket s = new Socket("localhost", 3456);
+        setIO(new BufferedReader(new InputStreamReader(s.getInputStream())),new PrintWriter(s.getOutputStream(), true));
         mainAnchorPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DOWN && firstView.getY() < stage.getHeight() - firstView.getFitHeight() - 2 * STEP){
                 System.out.println(firstView.getY());
                 firstView.setY(firstView.getY() + STEP);
+                System.out.println(printWriter);
+                printWriter.write((int) (firstView.getY() + STEP));
             }
             if (event.getCode() == KeyCode.UP && firstView.getY() != 0) {
                 firstView.setY(firstView.getY() - STEP);
+
+                printWriter.write((int) (firstView.getY() - STEP));
             }
         });
     }
@@ -87,7 +112,7 @@ public class ControllerGame implements Initializable {
             @Override
             public void handle(long now) {
                 for(Bonus bonus: bonusArrayList){
-                    bonus.setX(bonus.getX() - 3);
+                    bonus.setX(bonus.getX() - 1);
                     if(bonus.getX() <= 150 && bonus.getX() >= 100){
                         if(bonus.getY() <= firstView.getY() + firstView.getFitHeight() &&
                                 bonus.getY() + bonus.getImageView().getFitHeight() >= firstView.getY()){

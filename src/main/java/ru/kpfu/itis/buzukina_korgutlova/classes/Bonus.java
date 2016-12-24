@@ -1,4 +1,4 @@
-package ru.kpfu.itis.buzukina_korgutlova.content;
+package ru.kpfu.itis.buzukina_korgutlova.classes;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
