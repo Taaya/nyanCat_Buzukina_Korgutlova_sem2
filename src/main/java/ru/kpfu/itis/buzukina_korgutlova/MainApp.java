@@ -5,13 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerGame;
 import ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerMenu;
 import ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerRules;
 
 public class MainApp extends Application {
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 400;
     private ControllerMenu controllerMenu;
     private ControllerRules controllerRules;
     private Scene sceneMenu;

@@ -15,18 +15,9 @@ public class ControllerMenu implements Initializable {
     private static Stage stage;
     private Scene mainScene;
     private Scene rulesScene;
-    private Scene gameScene;
-
-    public Scene getMainScene() {
-        return mainScene;
-    }
 
     public  void setMainScene(Scene mainScene) {
         this.mainScene = mainScene;
-    }
-
-    public Scene getRulesScene() {
-        return rulesScene;
     }
 
     public  void setRulesScene(Scene rulesScene) {
@@ -40,18 +31,17 @@ public class ControllerMenu implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Loading...");
-
     }
 
 
     public void clickOnPlayButton(MouseEvent mouseEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/game.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/enterName.fxml"));
         AnchorPane root = loader.load();
-        ControllerGame controllerGame = loader.getController();
-        controllerGame.setStage(stage);
-        Scene sceneGame = new Scene(root, 500, 400);
-        controllerGame.setSceneGame(sceneGame);
-        stage.setScene(sceneGame);
+        ControllerEnterName controllerEnterName = loader.getController();
+        controllerEnterName .setStage(stage);
+        Scene scene = new Scene(root);
+        controllerEnterName .setSceneEnterName(scene);
+        stage.setScene(scene);
     }
 
     public void clickOnRulesButton(MouseEvent mouseEvent) throws IOException {
@@ -62,11 +52,4 @@ public class ControllerMenu implements Initializable {
         stage.close();
     }
 
-    public Scene getGameScene() {
-        return gameScene;
-    }
-
-    public void setGameScene(Scene gameScene) {
-        this.gameScene = gameScene;
-    }
 }

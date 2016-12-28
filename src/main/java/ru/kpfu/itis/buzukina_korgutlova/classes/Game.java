@@ -1,8 +1,9 @@
 package ru.kpfu.itis.buzukina_korgutlova.classes;
 
 import java.util.List;
+import java.util.Random;
 
-public class Game implements Runnable {
+public class Game {
     private List<Player> playerList;
     private Thread thread;
 
@@ -10,24 +11,29 @@ public class Game implements Runnable {
         this.playerList = playerList;
         for(Player player: playerList){
             player.setGame(this);
-            player.getPrintWriter().println("Game started");
-            boolean game = true;
-            while (game){
-
-                //player.getOpponent().setCoordinates(out);
-
-            }
-            //player.start();
+            player.start();
         }
-        this.thread = new Thread(this);
-        thread.start();
+        createBonuses();
         System.out.println("Game is created");
     }
 
-    @Override
-    public void run() {
-        System.out.println("Game is started");
-
+    private void createBonuses() {
+        int numberBonus;
+        Random random = new Random();
+        int x;
+        int y;
+        int width = 900;
+        for(int i = 0; i < 1500;i++){
+            numberBonus = random.nextInt(4);
+            x = random.nextInt(25 * width) + width;
+            y = random.nextInt(50) * 10 + 30;
+            for(Player player: playerList){
+                player.getPrintWriter().println("Bonus " + numberBonus + " " + x + " " + y);
+            }
+        }
+        for(Player player: playerList){
+            player.getPrintWriter().println("Game started");
+        }
 
     }
 

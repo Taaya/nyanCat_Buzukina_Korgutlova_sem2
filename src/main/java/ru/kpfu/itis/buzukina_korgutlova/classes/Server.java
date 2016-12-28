@@ -31,35 +31,24 @@ public class Server {
             List<Player> players = new ArrayList<>();
             Socket socket = null;
 
-            Scanner sc = new Scanner(System.in);
-
-            socket = ss.accept();
-            Player p1 = new Player(socket);
-            p1.getPrintWriter().write(1);
-            players.add(p1);
-            System.out.println("Client 1 is connected");
-
-            socket = ss.accept();
-            Player p2 = new Player(socket);
-            p1.getPrintWriter().write(2);
-            players.add(p2);
-            System.out.println("Client 2 is connected");
-
-            System.out.println("Name 1: ");
-            p1.getPrintWriter().write(sc.nextLine());
-            System.out.println("Name 2: ");
-            p2.getPrintWriter().write(sc.nextLine());
+            Player p1 = addClient(ss, 1, players);
+            Player p2 = addClient(ss, 2, players);
 
             p1.setOpponent(p2);
             p2.setOpponent(p1);
-
-
-            OutputStream os = socket.getOutputStream();
-
-
+            System.out.println(players);
             Game game = new Game(players);
             forGame.add(game);
         }
+    }
+
+    public Player addClient(ServerSocket ss, int number, List<Player> players) throws IOException {
+        Socket socket = ss.accept();
+        Player p1 = new Player(socket);
+        p1.getPrintWriter().println(number);
+        players.add(p1);
+        System.out.println("Client " + number + " is connected");
+        return p1;
     }
 
     public static void main(String[] args) throws IOException {
