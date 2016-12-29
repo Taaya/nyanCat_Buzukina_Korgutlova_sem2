@@ -1,5 +1,7 @@
 package ru.kpfu.itis.buzukina_korgutlova.classes;
 
+import javafx.scene.control.Label;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -14,6 +16,7 @@ public class Player implements Runnable{
     private Game game;
     private BufferedReader picture;
     private String name;
+    private Label name_label;
     private Socket socket;
     private Thread thread;
     private PrintWriter out;
@@ -32,7 +35,8 @@ public class Player implements Runnable{
         this.socket = socket;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
         this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
-        this.name = in.readLine();
+
+
     }
 
     public void start(){
@@ -45,9 +49,12 @@ public class Player implements Runnable{
 
         while (true){
             try {
-                String coordinates;
                 if(in.ready()) {
-
+                    String line = in.readLine();
+                    System.out.println("line player" + line);
+                    if (line.startsWith("y ")) {
+                        getOpponent().getPrintWriter().println(line);
+                    }
                 }
 
             } catch (IOException e) {
@@ -55,26 +62,7 @@ public class Player implements Runnable{
             }
         }
 
-//        System.out.print("Введите имя: ");
-//        String name = scanner.nextLine();
-//        out.println(name);
-//
-//        while (true) {
-//
-//            System.out.print("Введите сообщение: ");
-//            String outMessage = scanner.nextLine();
-//            out.println(outMessage);
-//
-//            try {
-//                while (in.ready()) {
-//                    String inMessage = in.readLine();
-//                    System.out.println(inMessage);
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
+
     }
 
     public PrintWriter getPrintWriter() {

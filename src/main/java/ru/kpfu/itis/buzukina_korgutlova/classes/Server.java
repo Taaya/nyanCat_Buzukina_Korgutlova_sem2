@@ -36,7 +36,6 @@ public class Server {
 
             p1.setOpponent(p2);
             p2.setOpponent(p1);
-            System.out.println(players);
             Game game = new Game(players);
             forGame.add(game);
         }
