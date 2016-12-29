@@ -1,20 +1,26 @@
 package ru.kpfu.itis.buzukina_korgutlova.controllers;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ru.kpfu.itis.buzukina_korgutlova.classes.Bonus;
 import ru.kpfu.itis.buzukina_korgutlova.classes.Name;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
@@ -31,8 +37,15 @@ public class ControllerGame implements Initializable {
     private ImageView firstView;
     private ImageView secondView;
     private BufferedReader bufferedReader;
+
+    public PrintWriter getPrintWriter() {
+        return printWriter;
+    }
+
     private PrintWriter printWriter;
     private ArrayList<Image> images;
+    public Label gameTime;
+
 
 
     public void setIO(BufferedReader bufferedReader, PrintWriter printWriter) throws IOException {
@@ -46,19 +59,14 @@ public class ControllerGame implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Loading game area..");
-        Socket s = null;
-        try {
-            s = new Socket("localhost", 3456);
-            setIO(new BufferedReader(new InputStreamReader(s.getInputStream())), new PrintWriter(s.getOutputStream(), true));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    }
 
+    public void initGame(){
+        System.out.println("Loading game area..");
         int picture = 0;
         try {
-            if (bufferedReader.ready())
-                picture = bufferedReader.read();
+            while(!bufferedReader.ready());
+            picture = Integer.parseInt(bufferedReader.readLine());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,6 +78,9 @@ public class ControllerGame implements Initializable {
             firstImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat1.png"));
             secondImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat2.png"));
         } else {
+            ImageView test = firstView;
+            firstView = secondView;
+            secondView = firstView;
             firstImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat2.png"));
             secondImage = new Image(getClass().getClassLoader().getResourceAsStream("view/static/cat1.png"));
         }
@@ -93,7 +104,13 @@ public class ControllerGame implements Initializable {
             e.printStackTrace();
         }
         initImage();
-        initArea();
+        try {
+            initArea();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initImage() {
@@ -101,6 +118,7 @@ public class ControllerGame implements Initializable {
         images.add(new Image(getClass().getClassLoader().getResourceAsStream("view/static/flower.png")));
         images.add(new Image(getClass().getClassLoader().getResourceAsStream("view/static/fish.jpg")));
         images.add(new Image(getClass().getClassLoader().getResourceAsStream("view/static/star.png")));
+        images.add(new Image(getClass().getClassLoader().getResourceAsStream("view/static/dog.png")));
     }
 
     public void setStage(Stage stage) {
@@ -113,14 +131,12 @@ public class ControllerGame implements Initializable {
 
     public void initMovie() throws IOException {
         final int STEP = 11;
-        Socket s = new Socket("localhost", 3456);
-        setIO(new BufferedReader(new InputStreamReader(s.getInputStream())), new PrintWriter(s.getOutputStream(), true));
         mainAnchorPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DOWN && firstView.getY() < stage.getHeight() - firstView.getFitHeight() - 2 * STEP) {
                 System.out.println(firstView.getY());
                 firstView.setY(firstView.getY() + STEP);
                 System.out.println(printWriter);
-                printWriter.write((int) (firstView.getY() + STEP));
+                printWriter.print(("SET_Y " + firstView.getY() + STEP));
                 System.out.println("new Y: " + (int) (firstView.getY() + STEP));
             }
             if (event.getCode() == KeyCode.UP && firstView.getY() != 0) {
@@ -135,7 +151,7 @@ public class ControllerGame implements Initializable {
         return sceneGame;
     }
 
-    private void initArea() {
+    private void initArea() throws IOException, InterruptedException {
         ArrayList<Bonus> bonusArrayList = new ArrayList<>();
         addElement(bonusArrayList);
         new AnimationTimer() {
@@ -153,24 +169,69 @@ public class ControllerGame implements Initializable {
 
 
             }
+
         }.start();
+
+        Task task = new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+                Timeline timeline = timerAnimated(60);
+                while (timeline.getStatus().equals(Animation.Status.RUNNING)){
+                    while (bufferedReader.ready()) {
+                        String line = bufferedReader.readLine();
+                        if(line.startsWith("SET_Y ")){
+
+                        }
+                    }
+                }
+
+                return null;
+            }
+        };
+    Thread th = new Thread(task);
+    th.setDaemon(true);
+    th.start();
+
+
     }
 
-    private void addElement(ArrayList<Bonus> bonusArrayList) {
+    private void addElement(ArrayList<Bonus> bonusArrayList) throws IOException, InterruptedException {
         Random random = new Random();
         Name[] names = Name.values();
-        int numberBonus;
-        int x;
-        int y;
-        for (int i = 0; i < 1700; i++) {
-            numberBonus = random.nextInt(3);
-            x = random.nextInt(25 * WIDTH) + WIDTH;
-            y = random.nextInt(50) * 10 + 30 ;
-            bonusArrayList.add(new Bonus(names[numberBonus], new ImageView(images.get(numberBonus)), x, y));
+        while (!bufferedReader.ready());
+        while(bufferedReader.ready()) {
+            String output = bufferedReader.readLine();
+            if(output.startsWith("Game started")){
+                break;
+            } else {
+                String[] line = output.split(" ");
+                int numberBonus = Integer.parseInt(line[1]);
+                bonusArrayList.add(new Bonus(names[numberBonus],
+                        new ImageView(images.get(numberBonus)), Double.parseDouble(line[2]), Double.parseDouble(line[3])));
+            }
         }
         for (Bonus bonus : bonusArrayList) {
             mainAnchorPane.getChildren().add(bonus.getImageView());
         }
+        //Thread.sleep(5000);
+    }
+
+    private Timeline timerAnimated(int timeInSeconds) {
+        int[] time = {timeInSeconds};
+        Platform.runLater(() -> gameTime.setText((time[0] / 60) + ":" + ((time[0] % 60) < 10 ? "0" : "") + (time[0] % 60)));
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.millis(1000),
+                        event -> {
+                            time[0] -= 1;
+                            String timeValue = (time[0] / 60) + ":" + ((time[0] % 60) < 10 ? "0" : "") + (time[0] % 60);
+                            Platform.runLater(() -> gameTime.setText(timeValue));
+                        }
+                )
+        );
+        timeline.setCycleCount(timeInSeconds);
+        timeline.play();
+        return timeline;
     }
 
 

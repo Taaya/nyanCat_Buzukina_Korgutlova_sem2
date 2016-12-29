@@ -30,16 +30,10 @@ public class Player implements Runnable{
 
     public Player(Socket socket) throws IOException {
         this.socket = socket;
-        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.out = new PrintWriter(socket.getOutputStream(), true);
-
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+        this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
+        this.name = in.readLine();
     }
-//    public Player(Socket socket, String name) throws IOException {
-//        this.socket = socket;
-//        this.name = in.readLine();
-//        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-//        this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"), true);
-//    }
 
     public void start(){
         this.thread = new Thread(this.thread);

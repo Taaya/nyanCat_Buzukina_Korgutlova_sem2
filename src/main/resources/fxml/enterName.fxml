@@ -5,13 +5,16 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane id="AnchorPane" maxHeight="400" maxWidth="500" minHeight="400" minWidth="500" prefHeight="400.0" prefWidth="500.0" styleClass="fon" stylesheets="@../view/style.css" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerEnterName">
-    <TextField layoutX="158.0" layoutY="118.0" prefHeight="25.0" prefWidth="185.0" />
+<AnchorPane id="AnchorPane" maxHeight="400" maxWidth="500" minHeight="400" minWidth="500" prefHeight="400.0"
+            prefWidth="500.0" styleClass="fon" stylesheets="@../view/style.css"
+            xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.kpfu.itis.buzukina_korgutlova.controllers.ControllerEnterName">
+    <TextField fx:id="name" layoutX="158.0" layoutY="118.0" prefHeight="25.0" prefWidth="185.0"/>
     <Label layoutX="158.0" layoutY="56.0" text="What's your name, kitty?" textFill="WHITE">
         <font>
-            <Font name="PT Mono Bold" size="17.0" />
+            <Font name="PT Mono Bold" size="17.0"/>
         </font>
     </Label>
-   <Button onMouseClicked="#buttonClick" styleClass="dark_button" layoutX="203.0" layoutY="188.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" text="Meow" />
+    <Button onMouseClicked="#buttonClick" styleClass="dark_button" layoutX="203.0" layoutY="188.0"
+            mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" text="Meow"/>
 </AnchorPane>

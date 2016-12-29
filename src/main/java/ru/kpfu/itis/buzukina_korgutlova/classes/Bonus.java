@@ -23,6 +23,8 @@ public class Bonus{
                 this.value = 5;
             case STAR:
                 this.value = 10;
+            case DOG:
+                this.value = -3;
         }
         this.imageView = imageView;
         this.imageView.setFitHeight(30);
