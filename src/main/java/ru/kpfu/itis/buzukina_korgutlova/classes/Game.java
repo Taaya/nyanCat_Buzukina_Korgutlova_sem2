@@ -31,9 +31,9 @@ public class Game {
                 player.getPrintWriter().println("Bonus " + numberBonus + " " + x + " " + y);
             }
         }
-        for(Player player: playerList){
-            player.getPrintWriter().println("Game started");
-        }
+//        for(Player player: playerList){
+//            player.getPrintWriter().println("Game started");
+//        }
 
     }
 

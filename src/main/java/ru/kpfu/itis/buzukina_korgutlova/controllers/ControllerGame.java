@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -30,6 +31,10 @@ public class ControllerGame implements Initializable {
     private static final int WIDTH = 900;
     private static final int HEIGHT = 550;
     public AnchorPane mainAnchorPane;
+    @FXML
+    private Label name1;
+    @FXML
+    private Label name2;
     private Stage stage;
     private Scene sceneGame;
     private ImageView firstView;
@@ -47,11 +52,9 @@ public class ControllerGame implements Initializable {
 
 
     public void setIO(BufferedReader bufferedReader, PrintWriter printWriter) throws IOException {
-//
-//        this.bufferedReader = new BufferedReader(new InputStreamReader(s.getInputStream()));
-//        this.printWriter = new PrintWriter(s.getOutputStream(), true);
         this.bufferedReader = bufferedReader;
         this.printWriter = printWriter;
+
     }
 
 
@@ -59,12 +62,13 @@ public class ControllerGame implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void initGame(){
+    public void initGame() throws IOException {
         System.out.println("Loading game area..");
         int picture = 0;
         try {
             while(!bufferedReader.ready());
-            picture = Integer.parseInt(bufferedReader.readLine());
+                picture = Integer.parseInt(bufferedReader.readLine());
+                //name1.setText(bufferedReader.readLine());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,9 +108,7 @@ public class ControllerGame implements Initializable {
         initImage();
         try {
             initArea();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
@@ -132,16 +134,18 @@ public class ControllerGame implements Initializable {
         final int STEP = 11;
         mainAnchorPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DOWN && firstView.getY() < stage.getHeight() - firstView.getFitHeight() - 2 * STEP) {
-                System.out.println(firstView.getY());
+                //System.out.println(firstView.getY());
                 firstView.setY(firstView.getY() + STEP);
-                System.out.println(printWriter);
-                printWriter.print(("SET_Y " + firstView.getY() + STEP));
+                int newY = (int) (firstView.getY() + STEP);
+                printWriter.print(("y  " + newY));
+                System.out.println("y " + newY);
                 System.out.println("new Y: " + (int) (firstView.getY() + STEP));
             }
             if (event.getCode() == KeyCode.UP && firstView.getY() != 0) {
                 firstView.setY(firstView.getY() - STEP);
-
-                printWriter.write((int) (firstView.getY() - STEP));
+                int newY = (int) (firstView.getY() - STEP);
+                printWriter.println("y " + newY);
+                System.out.println("y " + newY);
             }
         });
     }
@@ -178,10 +182,12 @@ public class ControllerGame implements Initializable {
             public Void call() throws Exception {
                 Timeline timeline = timerAnimated(60);
                 while (timeline.getStatus().equals(Animation.Status.RUNNING)){
-                    while (bufferedReader.ready()) {
+                    while (true) {
                         String line = bufferedReader.readLine();
-                        if(line.startsWith("SET_Y ")){
-
+                        System.out.println("line: " + line);
+                        if(line.startsWith("y ")){
+                            System.out.println("substr:" + line.substring(3));
+                            secondView.setY(Double.parseDouble(line.substring(3)));
                         }
                     }
                 }
